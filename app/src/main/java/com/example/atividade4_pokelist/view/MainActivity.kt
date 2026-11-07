@@ -1,0 +1,47 @@
+package com.example.atividade4_pokelist.view
+
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.atividade4_pokelist.R
+import com.example.atividade4_pokelist.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        //Definindo botões da nav bar como clicáveis
+        binding.searchIcoNavBar.setOnClickListener(this)
+        binding.favoriteIcoNavBar.setOnClickListener(this)
+        binding.listIcoNavBar.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when(v.id) {
+            binding.searchIcoNavBar.id -> {
+                Toast.makeText(applicationContext, "SANIDADE CLICK SEARCH", Toast.LENGTH_SHORT).show()
+            }
+            binding.favoriteIcoNavBar.id -> {
+                Toast.makeText(applicationContext, "SANIDADE CLICK FAVORITE", Toast.LENGTH_SHORT).show()
+            }
+            binding.listIcoNavBar.id -> {
+                Toast.makeText(applicationContext, "SANIDADE CLICK LIST", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
