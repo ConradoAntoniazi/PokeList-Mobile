@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ClientRetrofit {
+class RetrofitClient private constructor() {
     companion object {
         private lateinit var INSTANCE: Retrofit
         private const val BASE_URL = "https://pokeapi.co/api/v2/"
@@ -20,10 +20,9 @@ class ClientRetrofit {
             }
             return INSTANCE
         }
-    }
 
-    fun <S> createService(className: Class<S>): S {
-        return getClientInstance().create(className)
+        fun <S> createService(className: Class<S>): S {
+            return getClientInstance().create(className)
+        }
     }
-
 }

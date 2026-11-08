@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.replace
+import androidx.fragment.app.commit
 import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.databinding.ActivityMainBinding
 
@@ -25,6 +27,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             insets
         }
 
+        //Definindo primeiro frag a ser visto
+        setFragmentSearch()
+
         //Definindo botões da nav bar como clicáveis
         binding.searchIcoNavBar.setOnClickListener(this)
         binding.favoriteIcoNavBar.setOnClickListener(this)
@@ -34,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when(v.id) {
             binding.searchIcoNavBar.id -> {
-                Toast.makeText(applicationContext, "SANIDADE CLICK SEARCH", Toast.LENGTH_SHORT).show()
+                setFragmentSearch()
             }
             binding.favoriteIcoNavBar.id -> {
                 Toast.makeText(applicationContext, "SANIDADE CLICK FAVORITE", Toast.LENGTH_SHORT).show()
@@ -42,6 +47,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.listIcoNavBar.id -> {
                 Toast.makeText(applicationContext, "SANIDADE CLICK LIST", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    fun setFragmentSearch() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<SearchFragment>(R.id.fragment_container_view)
+        }
+    }
+
+    fun setFragmentResult(bundle: Bundle) {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<ResultFragment>(R.id.fragment_container_view, args = bundle)
         }
     }
 }

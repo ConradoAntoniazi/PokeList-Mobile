@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PokeList</string>
+    <string name="input_pokemon_name_hint">Nome do Pokemon</string>
+    <string name="text_button_search_frag">Buscar</string>
 </resources>

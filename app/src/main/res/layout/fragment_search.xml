@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="36dp">
+
+    <ImageView
+        android:id="@+id/pokeball_image_search_frag"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/pokeball_image"
+        app:layout_constraintBottom_toTopOf="@+id/input_name_pokemon_search_frag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+    />
+
+    <EditText
+        android:id="@+id/input_name_pokemon_search_frag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@color/lightRed"
+        android:gravity="center"
+        android:hint="@string/input_pokemon_name_hint"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_search_frag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pokeball_image_search_frag"
+    />
+
+    <Button
+        android:id="@+id/button_search_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/lightRed"
+        android:paddingHorizontal="32dp"
+        android:text="@string/text_button_search_frag"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_name_pokemon_search_frag"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
