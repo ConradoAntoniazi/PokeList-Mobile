@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(applicationContext, "SANIDADE CLICK FAVORITE", Toast.LENGTH_SHORT).show()
             }
             binding.listIcoNavBar.id -> {
-                Toast.makeText(applicationContext, "SANIDADE CLICK LIST", Toast.LENGTH_SHORT).show()
+                setFragmentList()
             }
         }
     }
@@ -54,6 +54,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace<SearchFragment>(R.id.fragment_container_view)
+        }
+    }
+
+    fun setFragmentList() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<ListFragment>(R.id.fragment_container_view)
         }
     }
 

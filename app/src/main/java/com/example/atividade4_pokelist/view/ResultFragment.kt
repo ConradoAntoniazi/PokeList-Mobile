@@ -66,7 +66,12 @@ class ResultFragment : Fragment() {
 
         // Botão Retornar (Seta no canto superior esquerdo)
         binding.btnBackResult.setOnClickListener {
-            (activity as? MainActivity)?.setFragmentSearch()
+            val origin = arguments?.getString("origin")
+            if (origin == "list") {
+                (activity as? MainActivity)?.setFragmentList()
+            } else {
+                (activity as? MainActivity)?.setFragmentSearch()
+            }
         }
 
         // Botão Coração (Favorito) -> Toast

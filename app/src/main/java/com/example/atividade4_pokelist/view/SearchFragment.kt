@@ -47,6 +47,7 @@ class SearchFragment : Fragment() {
                 if (response.isSuccessful && response.body() != null) {
                     val pokemon = response.body()!!
                     val bundle = Bundle().apply {
+                        putString("origin", "search")
                         putString("name", pokemon.name)
                         putString("front_default", pokemon.sprites.frontDefault)
 
