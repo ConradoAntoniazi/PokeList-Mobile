@@ -1,4 +1,4 @@
-package com.example.atividade4_pokelist.view
+package com.example.atividade4_pokelist.view.ui
 
 import android.os.Bundle
 import android.view.View
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 setFragmentSearch()
             }
             binding.favoriteIcoNavBar.id -> {
-                Toast.makeText(applicationContext, "SANIDADE CLICK FAVORITE", Toast.LENGTH_SHORT).show()
+                setFragmentFavorite()
             }
             binding.listIcoNavBar.id -> {
                 setFragmentList()
@@ -54,6 +54,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace<SearchFragment>(R.id.fragment_container_view)
+        }
+    }
+
+    fun setFragmentFavorite() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<FavoriteFragment>(R.id.fragment_container_view)
         }
     }
 

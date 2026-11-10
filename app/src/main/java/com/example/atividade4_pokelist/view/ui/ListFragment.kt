@@ -1,4 +1,4 @@
-package com.example.atividade4_pokelist.view
+package com.example.atividade4_pokelist.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -103,6 +103,7 @@ class ListFragment : Fragment() {
                     val pokemon = response.body()!!
                     val bundle = Bundle().apply {
                         putString("origin", "list")
+                        putInt("id", pokemon.id)
                         putString("name", pokemon.name)
                         putString("front_default", pokemon.sprites.frontDefault)
 

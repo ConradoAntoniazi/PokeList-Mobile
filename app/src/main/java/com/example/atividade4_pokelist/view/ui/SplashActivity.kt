@@ -1,4 +1,4 @@
-package com.example.atividade4_pokelist.view
+package com.example.atividade4_pokelist.view.ui
 
 import android.content.Intent
 import android.os.Bundle

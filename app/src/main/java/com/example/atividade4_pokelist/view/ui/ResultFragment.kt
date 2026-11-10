@@ -1,4 +1,4 @@
-package com.example.atividade4_pokelist.view
+package com.example.atividade4_pokelist.view.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.atividade4_pokelist.R
+import com.example.atividade4_pokelist.data.entity.PokemonModel
+import com.example.atividade4_pokelist.data.room.AppDatabase
 import com.example.atividade4_pokelist.databinding.FragmentResultBinding
 
 class ResultFragment : Fragment() {
@@ -24,6 +28,7 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val pokemonId = arguments?.getInt("id", 0) ?: 0
         val pokemonName = arguments?.getString("name")
         val imgSrc = arguments?.getString("front_default")
 
@@ -34,8 +39,7 @@ class ResultFragment : Fragment() {
         val spDef = arguments?.getInt("stat_sp_def", 0) ?: 0
         val speed = arguments?.getInt("stat_speed", 0) ?: 0
 
-        Log.i("FRAG_RESULT", "Pokemon Name: $pokemonName")
-        Log.i("FRAG_RESULT", "Pokemon Image: $imgSrc")
+        Log.i("FRAG_RESULT", "Pokemon ID: $pokemonId | Name: $pokemonName")
 
         binding.pokemonNameResultFrag.text = pokemonName ?: "Pokémon"
 
@@ -64,6 +68,21 @@ class ResultFragment : Fragment() {
         binding.statSpeedVal.text = speed.toString()
         binding.statSpeedBar.progress = speed
 
+        // Instanciar o Banco de Dados e obter o DAO
+        val db = AppDatabase.getDatabase(requireContext())
+        val pokemonDao = db.pokemonDAO()
+
+        fun updateHeartIcon(isFav: Boolean) {
+            val color = if (isFav) R.color.red else R.color.black
+            binding.btnFavoriteResult.setColorFilter(
+                ContextCompat.getColor(requireContext(), color)
+            )
+        }
+
+        // Verifica estado inicial de favorito
+        val isInitiallyFav = pokemonDao.isFavorite(pokemonId)
+        updateHeartIcon(isInitiallyFav)
+
         // Botão Retornar (Seta no canto superior esquerdo)
         binding.btnBackResult.setOnClickListener {
             val origin = arguments?.getString("origin")
@@ -74,9 +93,26 @@ class ResultFragment : Fragment() {
             }
         }
 
-        // Botão Coração (Favorito) -> Toast
+        // Botão Coração (Favorito) -> Alterna (Adiciona/Remove)
         binding.btnFavoriteResult.setOnClickListener {
-            Toast.makeText(context, "Favoritado com sucesso!", Toast.LENGTH_SHORT).show()
+            if (!pokemonName.isNullOrEmpty()) {
+                val currentlyFav = pokemonDao.isFavorite(pokemonId)
+                if (currentlyFav) {
+                    pokemonDao.deleteById(pokemonId)
+                    updateHeartIcon(false)
+                    Toast.makeText(context, "$pokemonName removido dos favoritos", Toast.LENGTH_SHORT).show()
+                } else {
+                    val model = PokemonModel().apply {
+                        this.id = pokemonId
+                        this.name = pokemonName
+                        this.imageUrl = imgSrc ?: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png"
+                        this.isFavorite = true
+                    }
+                    pokemonDao.insert(model)
+                    updateHeartIcon(true)
+                    Toast.makeText(context, "$pokemonName adicionado aos favoritos!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
