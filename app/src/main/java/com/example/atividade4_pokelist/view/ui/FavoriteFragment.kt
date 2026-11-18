@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.atividade4_pokelist.data.room.AppDatabase
 import com.example.atividade4_pokelist.databinding.FragmentFavoriteBinding
+import com.example.atividade4_pokelist.view.adapter.FavoriteAdapter
 
 class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
@@ -37,7 +38,11 @@ class FavoriteFragment : Fragment() {
 
         adapter = FavoriteAdapter(favorites) { pokemonToDelete ->
             pokemonDao.delete(pokemonToDelete)
-            Toast.makeText(context, "${pokemonToDelete.name} removido dos favoritos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "${pokemonToDelete.name} removido dos favoritos",
+                Toast.LENGTH_SHORT
+            ).show()
             loadFavorites()
         }
 

@@ -1,10 +1,11 @@
-package com.example.atividade4_pokelist.view.ui
+package com.example.atividade4_pokelist.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.atividade4_pokelist.data.entity.PokemonModel
 import com.example.atividade4_pokelist.databinding.PokemonFavLineBinding
+import com.example.atividade4_pokelist.view.ui.ListPokemonsFavViwHolder
 
 class FavoriteAdapter(
     private var items: MutableList<PokemonModel>,
