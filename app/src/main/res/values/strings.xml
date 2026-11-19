@@ -3,7 +3,20 @@
     <string name="input_pokemon_name_hint">Nome do Pokemon</string>
     <string name="text_button_search_frag">Buscar</string>
     <string name="title_list_frag">Lista de Pokemons</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_fav_frag">Meus favoritos</string>
+
+    <string name="login_title">Login</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Senha</string>
+    <string name="forgot_password">Esqueci a senha</string>
+    <string name="register_prompt">Cadastra-se</string>
+    <string name="login_button">Entrar</string>
+    <string name="register_title">Cadastro</string>
+    <string name="name_hint">Nome</string>
+    <string name="nick_hint">Nick</string>
+    <string name="password1_hint">Senha</string>
+    <string name="password2_hint">Confirmar senha</string>
+    <string name="btn_register">Cadastrar</string>
+    <string name="logout">Sair</string>
 </resources>

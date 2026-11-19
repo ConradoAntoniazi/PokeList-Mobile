@@ -1,5 +1,6 @@
 package com.example.atividade4_pokelist.view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -52,12 +54,24 @@ class MainActivity : AppCompatActivity() {
         // Conecta a Toolbar ao NavController
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        // Cor branca para o título e o ícone dos 3 pontinhos (overflow)
+        binding.toolbar.setTitleTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.white))
+        binding.toolbar.overflowIcon?.setTint(androidx.core.content.ContextCompat.getColor(this, R.color.white))
+
         // Infla o menu na Toolbar
         binding.toolbar.inflateMenu(R.menu.menu_toolbar)
+        binding.toolbar.overflowIcon?.setTint(androidx.core.content.ContextCompat.getColor(this, R.color.white))
 
         // Integra os cliques do menu automaticamente com o NavigationUI
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            NavigationUI.onNavDestinationSelected(menuItem, navController)
+            if (menuItem.itemId == R.id.action_logout) {
+                FirebaseAuth.getInstance().signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+                true
+            } else {
+                NavigationUI.onNavDestinationSelected(menuItem, navController)
+            }
         }
 
         // Oculta a Toolbar no ResultFragment e exibe nas outras telas

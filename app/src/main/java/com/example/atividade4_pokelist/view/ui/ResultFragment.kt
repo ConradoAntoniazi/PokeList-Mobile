@@ -13,13 +13,15 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.data.entity.PokemonModel
-import com.example.atividade4_pokelist.data.room.AppDatabase
+import com.example.atividade4_pokelist.data.repository.FirestoreRepository
 import com.example.atividade4_pokelist.databinding.FragmentResultBinding
 import com.google.android.material.snackbar.Snackbar
 
 class ResultFragment : Fragment() {
     private var _binding: FragmentResultBinding? = null
     private val binding get() = _binding!!
+    private val repository = FirestoreRepository()
+    private var isCurrentlyFav = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -71,13 +73,13 @@ class ResultFragment : Fragment() {
         binding.statSpeedVal.text = speed.toString()
         binding.statSpeedBar.progress = speed
 
-        // Instanciar o Banco de Dados e obter o DAO
-        val db = AppDatabase.getDatabase(requireContext())
-        val pokemonDao = db.pokemonDAO()
-
-        // Verifica estado inicial de favorito
-        val isInitiallyFav = pokemonDao.isFavorite(pokemonId)
-        updateHeartIcon(isInitiallyFav)
+        // Verifica estado inicial de favorito no Firestore
+        repository.isFavorite(pokemonId) { isFav ->
+            if (_binding != null) {
+                isCurrentlyFav = isFav
+                updateHeartIcon(isFav)
+            }
+        }
 
         // Botão Retornar (Seta no canto superior esquerdo)
         binding.btnBackResult.setOnClickListener {
@@ -91,11 +93,13 @@ class ResultFragment : Fragment() {
         snackFav.setTextMaxLines(1)
 
         snackFav.setAction("Desfavoritar", View.OnClickListener {
-            pokemonDao.deleteById(pokemonId)
-            updateHeartIcon(false)
-            snackFav.setBackgroundTint(Color.GRAY)
-            snackFav.setTextColor(Color.WHITE)
-            Snackbar.make(binding.root, "$pokemonName removido dos favoritos.", Snackbar.LENGTH_SHORT).show()
+            repository.removeFavorite(pokemonId) { success ->
+                if (success && _binding != null) {
+                    isCurrentlyFav = false
+                    updateHeartIcon(false)
+                    Snackbar.make(binding.root, "$pokemonName removido dos favoritos.", Snackbar.LENGTH_SHORT).show()
+                }
+            }
         })
 
         // Definindo snackbar para desfavoritar
@@ -107,11 +111,14 @@ class ResultFragment : Fragment() {
         // Botão Coração (Favorito) -> Alterna (Adiciona/Remove)
         binding.btnFavoriteResult.setOnClickListener {
             if (!pokemonName.isNullOrEmpty()) {
-                val currentlyFav = pokemonDao.isFavorite(pokemonId)
-                if (currentlyFav) {
-                    pokemonDao.deleteById(pokemonId)
-                    updateHeartIcon(false)
-                    snackDesfav.show()
+                if (isCurrentlyFav) {
+                    repository.removeFavorite(pokemonId) { success ->
+                        if (success && _binding != null) {
+                            isCurrentlyFav = false
+                            updateHeartIcon(false)
+                            snackDesfav.show()
+                        }
+                    }
                 } else {
                     val model = PokemonModel().apply {
                         this.id = pokemonId
@@ -119,9 +126,13 @@ class ResultFragment : Fragment() {
                         this.imageUrl = imgSrc ?: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png"
                         this.isFavorite = true
                     }
-                    pokemonDao.insert(model)
-                    updateHeartIcon(true)
-                    snackFav.show()
+                    repository.addFavorite(model) { success ->
+                        if (success && _binding != null) {
+                            isCurrentlyFav = true
+                            updateHeartIcon(true)
+                            snackFav.show()
+                        }
+                    }
                 }
             }
         }

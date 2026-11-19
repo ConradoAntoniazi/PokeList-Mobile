@@ -14,6 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Atividade4_pokelist" >
         <activity
+            android:name=".view.ui.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.ui.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".view.ui.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" >

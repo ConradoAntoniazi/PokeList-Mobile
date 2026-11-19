@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.atividade4_pokelist.data.room.AppDatabase
+import com.example.atividade4_pokelist.data.repository.FirestoreRepository
 import com.example.atividade4_pokelist.databinding.FragmentFavoriteBinding
 import com.example.atividade4_pokelist.view.adapter.FavoriteAdapter
 
@@ -16,6 +16,7 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: FavoriteAdapter
+    private val repository = FirestoreRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,28 +34,29 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun loadFavorites() {
-        val db = AppDatabase.getDatabase(requireContext())
-        val pokemonDao = db.pokemonDAO()
-        val favorites = pokemonDao.getAll().toMutableList()
-
-        adapter = FavoriteAdapter(favorites) { pokemonToDelete ->
-            AlertDialog.Builder(requireContext())
-                .setTitle("Desfavoritar Pokemon")
-                .setMessage("Tem certeza que deseja desfavoritar ${pokemonToDelete.name}?")
-                .setPositiveButton("Sim") { dialog, bt ->
-                    pokemonDao.delete(pokemonToDelete)
-                    Toast.makeText(
-                        context,
-                        "${pokemonToDelete.name} removido dos favoritos",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    loadFavorites()
-                }
-                .setNegativeButton("Não", null)
-                .show()
+        repository.getFavorites { favorites ->
+            if (_binding == null) return@getFavorites
+            adapter = FavoriteAdapter(favorites.toMutableList()) { pokemonToDelete ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Desfavoritar Pokemon")
+                    .setMessage("Tem certeza que deseja desfavoritar ${pokemonToDelete.name}?")
+                    .setPositiveButton("Sim") { _, _ ->
+                        repository.removeFavorite(pokemonToDelete.id) { success ->
+                            if (success && _binding != null) {
+                                Toast.makeText(
+                                    context,
+                                    "${pokemonToDelete.name} removido dos favoritos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                loadFavorites()
+                            }
+                        }
+                    }
+                    .setNegativeButton("Não", null)
+                    .show()
+            }
+            binding.recyclerFavPokemons.adapter = adapter
         }
-
-        binding.recyclerFavPokemons.adapter = adapter
     }
 
     override fun onDestroyView() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398987357114",
+    "project_id": "introducaofirebase-707b1",
+    "storage_bucket": "introducaofirebase-707b1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398987357114:android:265815dd0b8da868bf8b83",
+        "android_client_info": {
+          "package_name": "com.example.atividade4_pokelist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvpWJ7W7UUHB19TldFjH2edci2dEtF9Go"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
