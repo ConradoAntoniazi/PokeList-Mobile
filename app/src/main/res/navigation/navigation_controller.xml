@@ -8,7 +8,7 @@
         android:id="@+id/searchFragment"
         android:name="com.example.atividade4_pokelist.view.ui.SearchFragment"
         tools:layout="@layout/fragment_search"
-        android:label="SearchFragment" >
+        android:label="Buscar Pokémon" >
         <action
             android:id="@+id/action_searchFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
@@ -23,7 +23,7 @@
         android:id="@+id/listFragment"
         android:name="com.example.atividade4_pokelist.view.ui.ListFragment"
         tools:layout="@layout/fragment_list"
-        android:label="ListFragment" >
+        android:label="Lista de Pokémons" >
         <action
             android:id="@+id/action_listFragment_to_favoriteFragment"
             app:destination="@id/favoriteFragment" />
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.atividade4_pokelist.view.ui.FavoriteFragment"
-        android:label="fragment_favorite"
+        android:label="Favoritos"
         tools:layout="@layout/fragment_favorite" >
         <action
             android:id="@+id/action_favoriteFragment_to_searchFragment"
@@ -47,7 +47,7 @@
         android:id="@+id/resultFragment"
         android:name="com.example.atividade4_pokelist.view.ui.ResultFragment"
         tools:layout="@layout/fragment_result"
-        android:label="ResultFragment" >
+        android:label="Detalhes" >
         <action
             android:id="@+id/action_resultFragment_to_searchFragment"
             app:destination="@id/searchFragment" />

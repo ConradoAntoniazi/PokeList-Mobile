@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Atividade4_pokelist" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/lightRed</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Atividade4_pokelist" parent="Base.Theme.Atividade4_pokelist" />

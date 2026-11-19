@@ -8,59 +8,29 @@
     tools:context=".view.ui.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
+        android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_bar_background"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation_controller"
     />
 
-    <View
-        android:id="@+id/nav_bar_background"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/lightRed"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-    />
-
-    <ImageView
-        android:id="@+id/search_ico_nav_bar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_search_24"
-        app:layout_constraintStart_toStartOf="@id/nav_bar_background"
-        app:layout_constraintTop_toTopOf="@id/nav_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/nav_bar_background"
-        app:layout_constraintEnd_toStartOf="@id/favorite_ico_nav_bar"
-    />
-
-    <ImageView
-        android:id="@+id/favorite_ico_nav_bar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/heart"
-        app:layout_constraintStart_toEndOf="@id/search_ico_nav_bar"
-        app:layout_constraintTop_toTopOf="@id/nav_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/nav_bar_background"
-        app:layout_constraintEnd_toStartOf="@id/list_ico_nav_bar"
-    />
-
-    <ImageView
-        android:id="@+id/list_ico_nav_bar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/list"
-        app:layout_constraintStart_toEndOf="@id/favorite_ico_nav_bar"
-        app:layout_constraintTop_toTopOf="@id/nav_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/nav_bar_background"
-        app:layout_constraintEnd_toEndOf="@id/nav_bar_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/white"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
