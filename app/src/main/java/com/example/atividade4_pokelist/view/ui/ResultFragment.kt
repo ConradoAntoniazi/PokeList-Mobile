@@ -1,5 +1,6 @@
 package com.example.atividade4_pokelist.view.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.data.entity.PokemonModel
 import com.example.atividade4_pokelist.data.room.AppDatabase
 import com.example.atividade4_pokelist.databinding.FragmentResultBinding
+import com.google.android.material.snackbar.Snackbar
 
 class ResultFragment : Fragment() {
     private var _binding: FragmentResultBinding? = null
@@ -73,13 +75,6 @@ class ResultFragment : Fragment() {
         val db = AppDatabase.getDatabase(requireContext())
         val pokemonDao = db.pokemonDAO()
 
-        fun updateHeartIcon(isFav: Boolean) {
-            val color = if (isFav) R.color.red else R.color.black
-            binding.btnFavoriteResult.setColorFilter(
-                ContextCompat.getColor(requireContext(), color)
-            )
-        }
-
         // Verifica estado inicial de favorito
         val isInitiallyFav = pokemonDao.isFavorite(pokemonId)
         updateHeartIcon(isInitiallyFav)
@@ -89,6 +84,26 @@ class ResultFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        // Definindo snackbar para favoritar
+        val snackFav = Snackbar.make(binding.root, "$pokemonName adicionado aos favoritos!", Snackbar.LENGTH_SHORT)
+        snackFav.setBackgroundTint(Color.GRAY)
+        snackFav.setTextColor(Color.WHITE)
+        snackFav.setTextMaxLines(1)
+
+        snackFav.setAction("Desfavoritar", View.OnClickListener {
+            pokemonDao.deleteById(pokemonId)
+            updateHeartIcon(false)
+            snackFav.setBackgroundTint(Color.GRAY)
+            snackFav.setTextColor(Color.WHITE)
+            Snackbar.make(binding.root, "$pokemonName removido dos favoritos.", Snackbar.LENGTH_SHORT).show()
+        })
+
+        // Definindo snackbar para desfavoritar
+        val snackDesfav = Snackbar.make(binding.root, "$pokemonName removido dos favoritos.", Snackbar.LENGTH_SHORT)
+        snackDesfav.setBackgroundTint(Color.GRAY)
+        snackDesfav.setTextColor(Color.WHITE)
+        snackDesfav.setTextMaxLines(1)
+
         // Botão Coração (Favorito) -> Alterna (Adiciona/Remove)
         binding.btnFavoriteResult.setOnClickListener {
             if (!pokemonName.isNullOrEmpty()) {
@@ -96,7 +111,7 @@ class ResultFragment : Fragment() {
                 if (currentlyFav) {
                     pokemonDao.deleteById(pokemonId)
                     updateHeartIcon(false)
-                    Toast.makeText(context, "$pokemonName removido dos favoritos", Toast.LENGTH_SHORT).show()
+                    snackDesfav.show()
                 } else {
                     val model = PokemonModel().apply {
                         this.id = pokemonId
@@ -106,10 +121,17 @@ class ResultFragment : Fragment() {
                     }
                     pokemonDao.insert(model)
                     updateHeartIcon(true)
-                    Toast.makeText(context, "$pokemonName adicionado aos favoritos!", Toast.LENGTH_SHORT).show()
+                    snackFav.show()
                 }
             }
         }
+    }
+
+    fun updateHeartIcon(isFav: Boolean) {
+        val color = if (isFav) R.color.red else R.color.black
+        binding.btnFavoriteResult.setColorFilter(
+            ContextCompat.getColor(requireContext(), color)
+        )
     }
 
     override fun onDestroyView() {

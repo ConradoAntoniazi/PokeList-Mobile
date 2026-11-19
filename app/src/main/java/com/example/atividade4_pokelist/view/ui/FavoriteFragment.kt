@@ -1,5 +1,6 @@
 package com.example.atividade4_pokelist.view.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,13 +38,20 @@ class FavoriteFragment : Fragment() {
         val favorites = pokemonDao.getAll().toMutableList()
 
         adapter = FavoriteAdapter(favorites) { pokemonToDelete ->
-            pokemonDao.delete(pokemonToDelete)
-            Toast.makeText(
-                context,
-                "${pokemonToDelete.name} removido dos favoritos",
-                Toast.LENGTH_SHORT
-            ).show()
-            loadFavorites()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Desfavoritar Pokemon")
+                .setMessage("Tem certeza que deseja desfavoritar ${pokemonToDelete.name}?")
+                .setPositiveButton("Sim") { dialog, bt ->
+                    pokemonDao.delete(pokemonToDelete)
+                    Toast.makeText(
+                        context,
+                        "${pokemonToDelete.name} removido dos favoritos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    loadFavorites()
+                }
+                .setNegativeButton("Não", null)
+                .show()
         }
 
         binding.recyclerFavPokemons.adapter = adapter
