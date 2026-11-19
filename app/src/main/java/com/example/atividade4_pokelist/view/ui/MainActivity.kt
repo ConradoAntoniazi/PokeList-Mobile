@@ -2,23 +2,22 @@ package com.example.atividade4_pokelist.view.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.replace
-import androidx.fragment.app.commit
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -27,54 +26,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             insets
         }
 
-        //Definindo primeiro frag a ser visto
-        setFragmentSearch()
+        // Obtendo o NavController a partir do NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        navController = navHostFragment.navController
 
-        //Definindo botões da nav bar como clicáveis
+        // Definindo botões da nav bar como clicáveis
         binding.searchIcoNavBar.setOnClickListener(this)
         binding.favoriteIcoNavBar.setOnClickListener(this)
         binding.listIcoNavBar.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             binding.searchIcoNavBar.id -> {
-                setFragmentSearch()
+                if (navController.currentDestination?.id != R.id.searchFragment) {
+                    navController.navigate(R.id.searchFragment)
+                }
             }
             binding.favoriteIcoNavBar.id -> {
-                setFragmentFavorite()
+                if (navController.currentDestination?.id != R.id.favoriteFragment) {
+                    navController.navigate(R.id.favoriteFragment)
+                }
             }
             binding.listIcoNavBar.id -> {
-                setFragmentList()
+                if (navController.currentDestination?.id != R.id.listFragment) {
+                    navController.navigate(R.id.listFragment)
+                }
             }
-        }
-    }
-
-    fun setFragmentSearch() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<SearchFragment>(R.id.fragment_container_view)
-        }
-    }
-
-    fun setFragmentFavorite() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<FavoriteFragment>(R.id.fragment_container_view)
-        }
-    }
-
-    fun setFragmentList() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<ListFragment>(R.id.fragment_container_view)
-        }
-    }
-
-    fun setFragmentResult(bundle: Bundle) {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<ResultFragment>(R.id.fragment_container_view, args = bundle)
         }
     }
 }

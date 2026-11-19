@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.data.client.RetrofitClient
 import com.example.atividade4_pokelist.data.entity.PokemonEntity
 import com.example.atividade4_pokelist.data.entity.PokemonListItem
@@ -118,7 +120,7 @@ class ListFragment : Fragment() {
                             }
                         }
                     }
-                    (activity as? MainActivity)?.setFragmentResult(bundle)
+                    findNavController().navigate(R.id.resultFragment, bundle)
                 } else {
                     Toast.makeText(context, "Erro ao carregar detalhes do Pokémon", Toast.LENGTH_SHORT).show()
                 }

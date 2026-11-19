@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.data.client.RetrofitClient
 import com.example.atividade4_pokelist.data.entity.PokemonEntity
 import com.example.atividade4_pokelist.data.service.PokeApiService
@@ -63,7 +65,7 @@ class SearchFragment : Fragment() {
                             }
                         }
                     }
-                    (activity as? MainActivity)?.setFragmentResult(bundle)
+                    findNavController().navigate(R.id.action_searchFragment_to_resultFragment, bundle)
                 } else {
                     Toast.makeText(context, "Pokemon não encontrado!", Toast.LENGTH_SHORT).show()
                 }

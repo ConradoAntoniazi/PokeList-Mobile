@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.atividade4_pokelist.R
 import com.example.atividade4_pokelist.data.entity.PokemonModel
@@ -85,12 +86,7 @@ class ResultFragment : Fragment() {
 
         // Botão Retornar (Seta no canto superior esquerdo)
         binding.btnBackResult.setOnClickListener {
-            val origin = arguments?.getString("origin")
-            if (origin == "list") {
-                (activity as? MainActivity)?.setFragmentList()
-            } else {
-                (activity as? MainActivity)?.setFragmentSearch()
-            }
+            findNavController().popBackStack()
         }
 
         // Botão Coração (Favorito) -> Alterna (Adiciona/Remove)
